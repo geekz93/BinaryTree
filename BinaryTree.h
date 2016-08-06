@@ -1,7 +1,10 @@
+#ifndef _BINARYTREE_H
+#define _BINARYTREE_H
+
 
 template<typename elemType>
-//err claim: class BinaryTree<elemType>;
 class BinaryTree;
+//err claim: class BinaryTree<elemType>;
 
 template<typename valType>
 class BTnode{
@@ -9,9 +12,6 @@ class BTnode{
 public:
 //how to define construction function?
 	BTnode(valType val);
-	void insert(valType elem);
-	void remove();
-	void insert_value(valType elem, BTnode *root);
 
 private:
 	valType _val;
@@ -40,8 +40,12 @@ class BinaryTree{
 	friend class BTnode<elemType>;
 public:
 	BinaryTree() :_root(0){};
-	
+	//void insert(elemType elem){}
+	void insert(elemType elem);
+	void remove();
+	void insert_value(elemType elem, BTnode<elemType> *root);
 private:
 	BTnode<elemType> *_root;
 };
 
+#endif
