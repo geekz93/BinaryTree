@@ -44,8 +44,11 @@ public:
 	void insert(elemType elem);
 	void remove();
 	void insert_value(elemType elem, BTnode<elemType> *root);
+	void display();
+
 private:
 	BTnode<elemType> *_root;
+	void preorder(BTnode<elemType>* root);
 };
 
 #endif
