@@ -22,6 +22,7 @@ private:
 };
 
 /*need add valType*/
+//when use a template, must we always need a <T> behind BTnode?
 template<typename valType>
 BTnode<valType>::
 BTnode(valType val) :_val(val)
@@ -42,13 +43,17 @@ public:
 	BinaryTree() :_root(0){};
 	//void insert(elemType elem){}
 	void insert(elemType elem);
-	void remove();
+	void remove( elemType elem);//search value from root, so just one parameter
 	void insert_value(elemType elem, BTnode<elemType> *root);
 	void display();
+	void lchild_leaf(BTnode<elemType> *branch, BTnode<elemType> *subtree);//merge left node to right subtree's left button
 
 private:
 	BTnode<elemType> *_root;
 	void preorder(BTnode<elemType>* root);
+	void remove_root(elemType elem);
+	void remove_value(elemType elem, BTnode<elemType> *&prev);
+
 };
 
 #endif

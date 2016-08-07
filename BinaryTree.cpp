@@ -58,5 +58,80 @@ preorder(BTnode<elemType>* root)
 		if(root->_lchild) preorder(root->_lchild);
 		if(root->_rchild) preorder(root->_rchild);
 	}
-	
+
+}
+
+template <typename elemType>
+void BinaryTree<elemType>::
+remove(elemType elem)
+{
+    if( elem == _root->_val)
+        remove_root(elem);
+    else
+    {
+        //先进行查找，<, >, ==
+        //找到后执行移除操作（能否调用remove_root?）
+        remove_value(elem, _root);
+    }
+
+}
+
+template<typename elemType>
+void BinaryTree<elemType>::
+remove_root(elemType elem)
+{
+    //由于_root将会被更新，因此需要临时变量来存储原来
+    //的根节点的地址，用于delete和对原_lchild进行操作
+    BTnode<elemType> *pre_root;
+    pre_root = _root;
+    if(_root->_rchild)
+    {
+        _root= _root->_rchild;
+        lchild_leaf(pre_root->_lchild, _root);
+    }
+
+    else
+        _root= _root->_lchild;
+
+    delete pre_root;//
+
+}
+
+template<typename elemType>
+void BinaryTree<elemType>::
+remove_value(elemType elem, BTnode<elemType> *&prev)
+{
+    if(elem < prev->_val)
+    {
+        if(prev->_lchild)
+            remove_value(elem, prev->_lchild);
+        else return;
+    }
+
+    else if(elem > prev->_val)
+    {
+        if(prev->_val)
+            remove_value(elem, prev->_rchild);
+        else return;
+    }
+
+    else //find
+    {
+        if(prev->_rchild)
+            lchild_leaf(prev->_lchild, prev->_rchild);
+        //else
+
+    }
+
+}
+
+template<typename elemType>
+void BinaryTree<elemType>::
+lchild_leaf(BTnode<elemType> *leaf, BTnode<elemType> *subtree)
+{
+    while(subtree->_lchild)
+    {
+         subtree = subtree->_lchild;
+    }
+    subtree->_lchild = leaf;
 }
