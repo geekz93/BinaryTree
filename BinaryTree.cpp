@@ -11,31 +11,35 @@ insert(elemType elem)
 	if (!_root)
 		_root = new BTnode<elemType>(elem);
 	else
-		insert_value(elem, _root);
+		_root->insert_value(elem, _root);
 }
 
 
 //root->_lchild: address or value?
-template<typename elemType>
-void BinaryTree<elemType>::
-insert_value(elemType &elem, BTnode<elemType> *root)
+template<typename valType>
+void BTnode<valType>::
+insert_value(valType &elem, BTnode *root)
 {
 	if (elem == root->_val)
-		return;
+    {
+        root->_cnt++;
+        return;
+    }
+
 	else
 	if (elem < root->_val)
 	{
 		if (root->_lchild)
 			insert_value(elem, root->_lchild);
 		else
-			root->_lchild = new BTnode<elemType>(elem);
+			root->_lchild = new BTnode(elem);
 	}
 	else
 	{
 		if (root->_rchild)
 			insert_value(elem, root->_rchild);
 		else
-			root->_rchild = new BTnode<elemType>(elem);
+			root->_rchild = new BTnode(elem);
 	}
 }
 
@@ -71,7 +75,7 @@ remove(elemType elem)
     {
         //先进行查找，<, >, ==
         //找到后执行移除操作（能否调用remove_root?）
-        remove_value(elem, _root);
+        _root->remove_value(elem, _root);
     }
 
 }
@@ -97,32 +101,32 @@ remove_root(elemType &elem)
 
 }
 
-template<typename elemType>
-void BinaryTree<elemType>::
-remove_value(elemType &elem, BTnode<elemType> *&prev )
+template<typename valType>
+void BTnode<valType>::
+remove_value(valType &elem, BTnode *&prev )
 {
     if(elem < prev->_val)
     {
         if(prev->_lchild)
-            remove_value(elem, prev->_lchild);
+            prev->remove_value(elem, prev->_lchild);
         else return;
     }
 
     else if(elem > prev->_val)
     {
         if(prev->_rchild)
-            remove_value(elem, prev->_rchild);
+            prev->remove_value(elem, prev->_rchild);
         else return;
     }
 
     else //find
     {
-        BTnode<elemType> *tmp;
+        BTnode *tmp;
         tmp=prev;
         if(prev->_rchild)
         {
             prev = prev->_rchild;
-            lchild_leaf(tmp->_lchild, prev);
+            BinaryTree<valType>::lchild_leaf(tmp->_lchild, prev);
         }
 
         else
