@@ -18,7 +18,7 @@ insert(elemType elem)
 //root->_lchild: address or value?
 template<typename elemType>
 void BinaryTree<elemType>::
-insert_value(elemType elem, BTnode<elemType> *root)
+insert_value(elemType &elem, BTnode<elemType> *root)
 {
 	if (elem == root->_val)
 		return;
@@ -78,7 +78,7 @@ remove(elemType elem)
 
 template<typename elemType>
 void BinaryTree<elemType>::
-remove_root(elemType elem)
+remove_root(elemType &elem)
 {
     //由于_root将会被更新，因此需要临时变量来存储原来
     //的根节点的地址，用于delete和对原_lchild进行操作
@@ -99,7 +99,7 @@ remove_root(elemType elem)
 
 template<typename elemType>
 void BinaryTree<elemType>::
-remove_value(elemType elem, BTnode<elemType> *&prev)
+remove_value(elemType &elem, BTnode<elemType> *&prev )
 {
     if(elem < prev->_val)
     {
@@ -110,16 +110,25 @@ remove_value(elemType elem, BTnode<elemType> *&prev)
 
     else if(elem > prev->_val)
     {
-        if(prev->_val)
+        if(prev->_rchild)
             remove_value(elem, prev->_rchild);
         else return;
     }
 
     else //find
     {
+        BTnode<elemType> *tmp;
+        tmp=prev;
         if(prev->_rchild)
-            lchild_leaf(prev->_lchild, prev->_rchild);
-        //else
+        {
+            prev = prev->_rchild;
+            lchild_leaf(tmp->_lchild, prev);
+        }
+
+        else
+            prev = prev->_lchild;
+
+        delete tmp;
 
     }
 

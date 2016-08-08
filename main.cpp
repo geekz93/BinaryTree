@@ -11,8 +11,11 @@ int main()
 	ibt.insert(33);
 	ibt.insert(26);
 	ibt.insert(45);
+	cout << "traverse the tree: ";
 	ibt.display();
-	ibt.remove(23);
+	ibt.remove(3);
+	ibt.remove(33);
+	cout << "remove 3 and 33: ";
     ibt.display();
 	return 0;
 }
