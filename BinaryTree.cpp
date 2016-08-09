@@ -30,14 +30,17 @@ insert_value(valType &elem, BTnode *root)
 	if (elem < _val)
 	{
 		if (_lchild)
-			root->insert_value(elem, _lchild);
+            _lchild->insert_value(elem, _lchild);
+			//root->insert_value(elem, _lchild);//这样虽然没有报错，运行结果也正确，但逻辑上存在问题！
+
 		else
 			_lchild = new BTnode(elem);
 	}
 	else
 	{
 		if (_rchild)
-			root->insert_value(elem, _rchild);
+            _rchild->insert_value(elem, _lchild);
+			//root->insert_value(elem, _rchild);
 		else
 			_rchild = new BTnode(elem);
 	}

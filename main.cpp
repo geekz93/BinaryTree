@@ -5,7 +5,6 @@ int main()
 	BinaryTree<int> ibt;
 	ibt.insert(23);
 	ibt.insert(3);
-
 	ibt.insert(1);
 	ibt.insert(10);
 	ibt.insert(33);
