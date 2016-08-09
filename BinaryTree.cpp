@@ -20,26 +20,26 @@ template<typename valType>
 void BTnode<valType>::
 insert_value(valType &elem, BTnode *root)
 {
-	if (elem == root->_val)
+	if (elem == _val)
     {
-        root->_cnt++;
+        _cnt++;
         return;
     }
 
 	else
-	if (elem < root->_val)
+	if (elem < _val)
 	{
-		if (root->_lchild)
-			insert_value(elem, root->_lchild);
+		if (_lchild)
+			root->insert_value(elem, _lchild);
 		else
-			root->_lchild = new BTnode(elem);
+			_lchild = new BTnode(elem);
 	}
 	else
 	{
-		if (root->_rchild)
-			insert_value(elem, root->_rchild);
+		if (_rchild)
+			root->insert_value(elem, _rchild);
 		else
-			root->_rchild = new BTnode(elem);
+			_rchild = new BTnode(elem);
 	}
 }
 
@@ -65,12 +65,18 @@ preorder(BTnode<elemType>* root)
 
 }
 
+//在成员函数中直接使用变量或者函数实际是 this->val或者 this->fun()
+//如果指定了 pointer->val 或者 pointer->fun() 则this指针会相应发生改变
+//因此如果想要改变 this 指针就需要使用 pointer->
+
 template <typename elemType>
 void BinaryTree<elemType>::
 remove(elemType elem)
 {
+    //使用remove_root(elem) 和 使用 _root->remove_root(elem) 的区别
     if( elem == _root->_val)
         remove_root(elem);
+        //_root->remove_root(elem);//由于BTnode类中没有remove_root,因此会报错
     else
     {
         //先进行查找，<, >, ==
@@ -88,7 +94,7 @@ remove_root(elemType &elem)
     //的根节点的地址，用于delete和对原_lchild进行操作
     BTnode<elemType> *pre_root;
     pre_root = _root;
-    if(_root->_rchild)
+    if(_root->_rchild)//_rchild在BTnode类中定义的，因此需要使用->
     {
         _root= _root->_rchild;
         lchild_leaf(pre_root->_lchild, _root);
@@ -105,34 +111,33 @@ template<typename valType>
 void BTnode<valType>::
 remove_value(valType &elem, BTnode *&prev )
 {
-    if(elem < prev->_val)
+    //形参2的类型就是BTnode，this指针存储的是BTnode类型的地址
+    if(elem < _val)
     {
-        if(prev->_lchild)
-            prev->remove_value(elem, prev->_lchild);
+        if(_lchild)
+            prev->remove_value(elem, _lchild);
         else return;
     }
 
-    else if(elem > prev->_val)
+    else if(elem > _val)
     {
-        if(prev->_rchild)
-            prev->remove_value(elem, prev->_rchild);
+        if(_rchild)
+            prev->remove_value(elem, _rchild);
         else return;
     }
 
     else //find
     {
-        BTnode *tmp;
-        tmp=prev;
-        if(prev->_rchild)
+        if(_rchild)
         {
-            prev = prev->_rchild;
-            BinaryTree<valType>::lchild_leaf(tmp->_lchild, prev);
+            prev = _rchild;
+            BinaryTree<valType>::lchild_leaf(_lchild, prev);
         }
 
         else
-            prev = prev->_lchild;
+            prev = _lchild;
 
-        delete tmp;
+        delete this;
 
     }
 
